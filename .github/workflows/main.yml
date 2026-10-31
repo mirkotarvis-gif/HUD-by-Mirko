@@ -1,13 +1,9 @@
-# Builds the mod on every push / pull request.
-# The finished .jar appears under the run's "Artifacts" (Actions tab -> click the run -> scroll down).
-# Push a tag like v1.2.0 and it also creates a GitHub Release with the jar attached.
-
 name: Build ShiftMenu
 
 on:
   push:
   pull_request:
-  workflow_dispatch: # adds a "Run workflow" button in the Actions tab
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -27,12 +23,11 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
-
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
+        with:
+          gradle-version: '9.8.2'
 
       - name: Build
-        run: ./gradlew build --stacktrace
+        run: gradle build --stacktrace
 
       - name: Upload jar
         uses: actions/upload-artifact@v4
